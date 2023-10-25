@@ -43,21 +43,47 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
+	b2Vec2 vel = b2Vec2(0, 0);
+	if (isGodmode == true)
+	{
+		vel = b2Vec2(0, 0);
+	}
+	else if (isGodmode == false){
+		 vel = b2Vec2(0, -GRAVITY_Y);
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		//
+		if (isGodmode == true)
+		{
+			vel = b2Vec2(0, -speed * dt);
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		//
+		if (isGodmode == true)
+		{
+			vel = b2Vec2(0, speed * dt);
+		}
 	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		vel = b2Vec2(-speed*dt, -GRAVITY_Y);
+		if (isGodmode == true)
+		{
+			vel = b2Vec2(-speed * dt, 0);
+		}
+		else {
+			vel = b2Vec2(-speed * dt, -GRAVITY_Y);
+		}
+		
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel = b2Vec2(speed*dt, -GRAVITY_Y);
+		if (isGodmode == true)
+		{
+			vel = b2Vec2(speed * dt, 0);
+		}
+		else {
+			vel = b2Vec2(speed * dt, -GRAVITY_Y);
+		}
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
@@ -80,8 +106,8 @@ bool Player::Update(float dt)
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		if (isGodmode == false){ isGodmode == true;}
-		else if (isGodmode == true){ isGodmode == false;}
+		if (isGodmode == false) { isGodmode = true;}
+		else if (isGodmode == true){ isGodmode = false;}
 	}
 
 	//Set the velocity of the pbody of the player
