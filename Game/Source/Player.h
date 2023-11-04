@@ -32,6 +32,7 @@ public:
 	PhysBody* pbody;
 	int pickCoinFxId;
 
+	float jumpForce = 20.0f;
 	bool isGodmode = false;
 };
 

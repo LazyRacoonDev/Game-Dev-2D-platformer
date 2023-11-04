@@ -51,43 +51,49 @@ bool Player::Update(float dt)
 	else if (isGodmode == false){
 		 vel = b2Vec2(0, -GRAVITY_Y);
 	}
-
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		if (isGodmode == true)
-		{
-			vel = b2Vec2(0, -speed * dt);
-		}
-	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		if (isGodmode == true)
-		{
-			vel = b2Vec2(0, speed * dt);
-		}
-	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		if (isGodmode == true)
-		{
-			vel = b2Vec2(-speed * dt, 0);
-		}
-		else {
-			vel = b2Vec2(-speed * dt, -GRAVITY_Y);
-		}
-		
+		vel = b2Vec2(-speed * dt, -GRAVITY_Y);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		if (isGodmode == true)
-		{
-			vel = b2Vec2(speed * dt, 0);
-		}
-		else {
-			vel = b2Vec2(speed * dt, -GRAVITY_Y);
-		}
+		vel = b2Vec2(speed * dt, -GRAVITY_Y);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		vel = b2Vec2(0, speed*dt);
+		//vel = b2Vec2(0, jumpForce);
+		pbody->body->ApplyLinearImpulse(vel, pbody->body->GetWorldCenter(), true);
+		LOG("JUMP");
+
+	}
+
+	if (isGodmode == true){
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			vel = b2Vec2(0, -speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			vel = b2Vec2(0, speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			vel = b2Vec2(speed * dt, 0);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			vel = b2Vec2(-speed * dt, 0);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			vel = b2Vec2(speed * dt, -speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			vel = b2Vec2(-speed * dt, -speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			vel = b2Vec2(speed * dt, speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			vel = b2Vec2(-speed * dt, speed * dt);
+		}
 	}
 
 	//Set the velocity of the pbody of the player
