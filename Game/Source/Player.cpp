@@ -22,6 +22,7 @@ bool Player::Awake() {
 
 	//L03: DONE 2: Initialize Player parameters
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
+	initialPosition = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
 
 	return true;
 }
@@ -42,7 +43,6 @@ bool Player::Start() {
 
 	//initialize audio effect
 	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
-
 
 	return true;
 }
@@ -70,11 +70,12 @@ bool Player::Update(float dt)
 		velocity.x = 0.2*dt;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canJump) {
 		if (canJump)
 		{
-			velocity.y = -jumpForce * dt;
+			velocity.y = -jumpForce*dt;
 			canJump = false;
+			pbody->body->SetLinearVelocity(velocity);
 		}
 		LOG("JUMP");
 	}
@@ -112,21 +113,22 @@ bool Player::Update(float dt)
 		}
 	}
 
+	pbody->body->SetLinearVelocity(velocity);
+	b2Transform pbodyPos = pbody->body->GetTransform();
+	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
+	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
+	app->render->DrawTexture(texture, position.x, position.y);
+
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		position.x = parameters.attribute("x").as_int();
-		position.y = parameters.attribute("y").as_int();
+		position.x = initialPosition.x;
+		position.y = initialPosition.y;
+		pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y)), 0);
+		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		isGodmode = !isGodmode;
 	}
-		
-	pbody->body->SetLinearVelocity(velocity);
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
-
-	app->render->DrawTexture(texture,position.x,position.y);
 
 	return true;
 }
