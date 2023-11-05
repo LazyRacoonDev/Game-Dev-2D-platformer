@@ -22,7 +22,7 @@
   </audio>
 
   <scene>
-    <map path="Assets/Maps/" name="GameDevMap.tmx"/>
+    <map path="Assets/Maps/" name="MapTemplate.tmx"/>
     <player x="400" y="352" texturepath="Assets/Textures/player1.png"/>
   </scene>
   
