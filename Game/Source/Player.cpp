@@ -53,7 +53,7 @@ bool Player::Update(float dt)
 
 	//L03: DONE 4: render the player texture and modify the position of the player using WSAD keys and render the texture
 	
-	b2Vec2 velocity = b2Vec2(0, 0);
+	b2Vec2 velocity;
 	b2Vec2 gravity(0, GRAVITY_Y);
 
 	if (isGodmode == true)
@@ -84,6 +84,7 @@ bool Player::Update(float dt)
 
 	if (jumping)
 	{
+		velocity.x += gravity.x * dt;
 		velocity.y += gravity.y * dt;
 		jumping = false;
 	}
@@ -146,6 +147,11 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		isGodmode = !isGodmode;
+	}
+
+	if (app->render->camera.x - position.x + 400 <= -24 && app->render->camera.x - position.x + 400 >= -1550) {
+		app->render->camera.x = -position.x + 400;
+
 	}
 
 	return true;

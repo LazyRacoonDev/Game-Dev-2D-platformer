@@ -42,7 +42,7 @@ public:
 	float speed = 2.0f;
 	float godModeSpeed = 7.5f;
 	float jumpForce = 5.0f;
-	float maxJumpForce = 200.0f;
+	float maxJumpForce = 55.0f;
 	bool canJump = false;
 	bool jumping = false;
 	bool isGodmode = false;
