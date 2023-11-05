@@ -45,7 +45,15 @@ public:
 	PhysBody* pbody;
 	int pickCoinFxId;
 
-	float jumpForce = 20.0f;
+	// L07 DONE 5: Add physics to the player - declare a Physics body
+	PhysBody* pbody;
+	int hp = 100;
+	float speed = 2.0f;
+	float godModeSpeed = 7.5f;
+	float jumpForce = 5.0f;
+	float maxJumpForce = 55.0f;
+	bool canJump = false;
+	bool jumping = false;
 	bool isGodmode = false;
 };
 
