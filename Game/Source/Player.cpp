@@ -110,6 +110,26 @@ bool Player::Awake() {
 
 bool Player::Start() {
 
+		texture = app->tex->Load(config.attribute("texturePath").as_string());
+
+		// L07 DONE 5: Add physics to the player - initialize physics body
+		app->tex->GetSize(texture, texW, texH);
+		pbody = app->physics->CreateCircle(position.x, position.y, texW / 2, bodyType::DYNAMIC);
+
+		// L07 DONE 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
+		pbody->listener = this;
+
+		// L07 DONE 7: Assign collider type
+		pbody->ctype = ColliderType::PLAYER;
+
+		//initialize audio effect
+		pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
+		currentAnimation = &idleAnim;
+		return true;
+	}
+
+	bool Player::Update(float dt){
+
 	b2Vec2 velocity;
 	b2Vec2 gravity(0, GRAVITY_Y);
 
@@ -187,7 +207,9 @@ bool Player::Start() {
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
 	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
-	app->render->DrawTexture(texture, position.x, position.y);
+	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+
+	app->render->DrawTexture(texture, position.x, position.y, &rect);
 
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		position.x = initialPosition.x;

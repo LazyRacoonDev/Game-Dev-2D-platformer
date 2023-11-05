@@ -39,10 +39,10 @@ public:
 
 
 public:
-	float speed = 0.2f;
 	const char* texturePath;
 	SDL_Texture* texture = NULL;
-	PhysBody* pbody;
+	pugi::xml_node config;
+	uint texW, texH;
 	int pickCoinFxId;
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
