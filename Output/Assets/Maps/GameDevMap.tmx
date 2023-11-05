@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="300" height="125" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="1">
  <tileset firstgid="1" name="Bosque" tilewidth="16" tileheight="16" tilecount="1020" columns="34">
-  <image source="../Downloads/FPSET1_v2.0/SET1/_PNG/SET1_Mainlev_build.png" width="544" height="480"/>
+  <image source="Bosque.png" width="544" height="480"/>
  </tileset>
  <tileset firstgid="1021" name="Cueva-1" tilewidth="16" tileheight="16" tilecount="4096" columns="64">
-  <image source="../Downloads/PixelFantasy_Caves_1.0 (1)/mainlev_build.png" width="1024" height="1024"/>
+  <image source="Cueva-1.png" width="1024" height="1024"/>
  </tileset>
  <tileset firstgid="5117" source="Colliders.tsx"/>
  <layer id="1" name="Capa de patrones 1" width="300" height="125">
