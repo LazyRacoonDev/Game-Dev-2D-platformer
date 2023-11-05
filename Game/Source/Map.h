@@ -7,94 +7,95 @@
 
 #include "PugiXml\src\pugixml.hpp"
 
+// L05: DONE 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
 struct TileSet
 {
-	SString	name;
-	int	firstgid;
-	int margin;
-	int	spacing;
-	int	tileWidth;
-	int	tileHeight;
-	int columns;
-	int tilecount;
+    int firstgid;
+    SString name;
+    int tilewidth;
+    int tileheight;
+    int spacing;
+    int margin;
+    int tilecount;
+    int columns;
 
-	SDL_Texture* texture;
-	SDL_Rect GetTileRect(int gid) const;
+    SDL_Texture* texture;
+
+    // L06: DONE 7: Implement the method that receives the gid and returns a Rect
+
+    SDL_Rect GetRect(uint gid) {
+        SDL_Rect rect = { 0 };
+
+        int relativeIndex = gid - firstgid;
+        rect.w = tilewidth;
+        rect.h = tileheight;
+        rect.x = margin + (tilewidth + spacing) * (relativeIndex % columns);
+        rect.y = margin + (tileheight + spacing) * (relativeIndex / columns);
+
+        return rect;
+    }
 };
 
-//  We create an enum for map type, just for convenience,
-// NOTE: Platformer game will be of type ORTHOGONAL
-enum MapTypes
-{
-	MAPTYPE_UNKNOWN = 0,
-	MAPTYPE_ORTHOGONAL,
-	MAPTYPE_ISOMETRIC,
-	MAPTYPE_STAGGERED
-};
-
+// L08: DONE 5: Add attributes to the property structure
 struct Properties
 {
-	struct Property
-	{
-		SString name;
-		bool value;
-	};
+    struct Property
+    {
+        SString name;
+        bool value; //We assume that we are going to work only with bool for the moment
+    };
 
-	~Properties()
-	{
-		//...
-		ListItem<Property*>* item;
-		item = list.start;
+    List<Property*> propertyList;
 
-		while (item != NULL)
-		{
-			RELEASE(item->data);
-			item = item->next;
-		}
+    ~Properties()
+    {
+        //...
+        ListItem<Property*>* property;
+        property = propertyList.start;
 
-		list.Clear();
-	}
+        while (property != NULL)
+        {
+            RELEASE(property->data);
+            property = property->next;
+        }
 
-	Property* GetProperty(const char* name);
+        propertyList.Clear();
+    }
 
-	List<Property*> list;
+    // L08: DONE 7: Method to ask for the value of a custom property
+    Property* GetProperty(const char* name);
+
 };
 
+// L05: DONE 1: Create a struct needed to hold the information to Map node
 struct MapLayer
 {
-	SString	name;
-	int id; 
-	int width;
-	int height;
-	uint* data;
+    // L06: DONE 1: Add the info to the MapLayer Struct
+    int id;
+    SString name;
+    int width;
+    int height;
+    uint* tiles;
+    Properties properties;
 
-	Properties properties;
-
-	MapLayer() : data(NULL)
-	{}
-
-	~MapLayer()
-	{
-		RELEASE(data);
-	}
-
-	inline uint Get(int x, int y) const
-	{
-		return data[(y * width) + x];
-	}
+    // L06: DONE 6: Short function to get the gid value of x,y
+    uint Get(int x, int y) const
+    {
+        return tiles[(y * width) + x];
+    }
 };
 
 struct MapData
 {
-	int width;
-	int	height;
-	int	tileWidth;
-	int	tileHeight;
-	List<TileSet*> tilesets;
-	MapTypes type;
+    int width;
+    int height;
+    int tilewidth;
+    int tileheight;
+    List<TileSet*> tilesets;
 
-	List<MapLayer*> maplayers;
+    // L06: DONE 2: Add a list/array of layers to the map
+    List<MapLayer*> layers;
 };
 
 class Map : public Module
@@ -107,41 +108,40 @@ public:
     virtual ~Map();
 
     // Called before render is available
-    bool Awake(pugi::xml_node& conf);
+    bool Awake(pugi::xml_node config);
 
-	// Called before the first frame
-	bool Start();
+    // Called before the first frame
+    bool Start();
 
-	// Called each loop iteration
-	bool Update(float dt);
+    // Called each loop iteration
+    bool Update(float dt);
 
     // Called before quitting
     bool CleanUp();
 
     // Load new map
-	bool Load(SString mapFileName);
+    bool Load(SString mapFileName);
 
-	iPoint MapToWorld(int x, int y) const;
-	iPoint Map::WorldToMap(int x, int y);
+    // L06: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
+    iPoint MapToWorld(int x, int y) const;
 
-private:
+    // L08: DONE 2: Implement function to the Tileset based on a tile id
+    TileSet* GetTilesetFromTileId(int gid) const;
 
-	bool LoadMap(pugi::xml_node mapFile);
-	bool LoadTileSet(pugi::xml_node mapFile);
-	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadAllLayers(pugi::xml_node mapNode);
-	TileSet* GetTilesetFromTileId(int gid) const;
-	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+    // L06: DONE 6: Load a group of properties 
+    bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 public: 
-
-	MapData mapData;
-	SString name;
-	SString path;
+    SString name;
+    SString path;
 
 private:
-
-	bool mapLoaded;
+    // L05: DONE 1: Declare a variable data of the struct MapData
+    MapData mapData;
+    bool mapLoaded;
 };
+
+
+
 
 #endif // __MAP_H__
