@@ -29,7 +29,6 @@ public:
 public:
 
 	//L02: DONE 2: Declare player parameters
-	float speed = 0.2f;
 	SDL_Texture* texture = NULL;
 	pugi::xml_node config;
 	uint texW, texH;
@@ -40,8 +39,12 @@ public:
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	int hp = 100;
-	float jumpForce = 10.0f;
+	float speed = 2.0f;
+	float godModeSpeed = 7.5f;
+	float jumpForce = 5.0f;
+	float maxJumpForce = 200.0f;
 	bool canJump = false;
+	bool jumping = false;
 	bool isGodmode = false;
 };
 

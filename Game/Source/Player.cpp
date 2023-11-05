@@ -54,6 +54,8 @@ bool Player::Update(float dt)
 	//L03: DONE 4: render the player texture and modify the position of the player using WSAD keys and render the texture
 	
 	b2Vec2 velocity = b2Vec2(0, 0);
+	b2Vec2 gravity(0, GRAVITY_Y);
+
 	if (isGodmode == true)
 	{
 		velocity = b2Vec2(0, 0);
@@ -63,53 +65,63 @@ bool Player::Update(float dt)
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -0.2*dt;
+		velocity.x = -speed;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = 0.2*dt;
+		velocity.x = speed;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canJump) {
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canJump && !jumping) {
 		if (canJump)
 		{
-			velocity.y = -jumpForce*dt;
+			velocity.y = -jumpForce;
 			canJump = false;
-			pbody->body->SetLinearVelocity(velocity);
+			jumping = true;
 		}
 		LOG("JUMP");
 	}
 
+	if (jumping)
+	{
+		velocity.y += gravity.y * dt;
+		jumping = false;
+	}
+
+	if (velocity.y < -maxJumpForce) {
+		velocity.y = -maxJumpForce;
+	}
+
 	if (isGodmode == true) {
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			velocity.y =  -speed * dt;
+			velocity.y =  -godModeSpeed;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			velocity.y = speed * dt;
+			velocity.y = godModeSpeed;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			velocity.x = speed * dt;
+			velocity.x = godModeSpeed;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			velocity.x = -speed * dt;
+			velocity.x = -godModeSpeed;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			velocity.y = -speed * dt;
-			velocity.x = speed * dt;
+			velocity.y = -godModeSpeed;
+			velocity.x = godModeSpeed;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			velocity.y = -speed * dt;
-			velocity.x = -speed * dt;
+			velocity.y = -godModeSpeed;
+			velocity.x = -godModeSpeed;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			velocity.y = speed * dt;
-			velocity.x = speed * dt;
+			velocity.y = godModeSpeed;
+			velocity.x = godModeSpeed;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			velocity.y = speed * dt;
-			velocity.x = -speed * dt;
+			velocity.y = godModeSpeed;
+			velocity.x = -godModeSpeed;
 		}
 	}
 
@@ -120,6 +132,12 @@ bool Player::Update(float dt)
 	app->render->DrawTexture(texture, position.x, position.y);
 
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		position.x = initialPosition.x;
+		position.y = initialPosition.y;
+		pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y)), 0);
+		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		position.x = initialPosition.x;
 		position.y = initialPosition.y;
 		pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y)), 0);
