@@ -43,25 +43,86 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
-
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		//
+	b2Vec2 vel = b2Vec2(0, 0);
+	if (isGodmode == true)
+	{
+		vel = b2Vec2(0, 0);
 	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		//
+	else if (isGodmode == false){
+		 vel = b2Vec2(0, -GRAVITY_Y);
 	}
-
+	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		vel = b2Vec2(-speed*dt, -GRAVITY_Y);
+		vel = b2Vec2(-speed * dt, -GRAVITY_Y);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel = b2Vec2(speed*dt, -GRAVITY_Y);
+		vel = b2Vec2(speed * dt, -GRAVITY_Y);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		//vel = b2Vec2(0, jumpForce);
+		pbody->body->ApplyLinearImpulse(vel, pbody->body->GetWorldCenter(), true);
+		LOG("JUMP");
+
+	}
+
+	if (isGodmode == true){
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			vel = b2Vec2(0, -speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			vel = b2Vec2(0, speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			vel = b2Vec2(speed * dt, 0);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			vel = b2Vec2(-speed * dt, 0);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			vel = b2Vec2(speed * dt, -speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			vel = b2Vec2(-speed * dt, -speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			vel = b2Vec2(speed * dt, speed * dt);
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			vel = b2Vec2(-speed * dt, speed * dt);
+		}
 	}
 
 	//Set the velocity of the pbody of the player
 	pbody->body->SetLinearVelocity(vel);
+	
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		position.x = parameters.attribute("x").as_int();
+		position.y = parameters.attribute("y").as_int();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		position.x = parameters.attribute("x2").as_int();
+		position.y = parameters.attribute("y2").as_int();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		position.x = parameters.attribute("x3").as_int();
+		position.y = parameters.attribute("y3").as_int();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
+		position.x = parameters.attribute("x3").as_int();
+		position.y = parameters.attribute("y3").as_int();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (isGodmode == false) { isGodmode = true; }
+		else if (isGodmode == true) { isGodmode = false; }
+	}
 
 	//Update player position in pixels
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;

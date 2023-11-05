@@ -22,7 +22,6 @@ Physics::Physics() : Module()
 {
 	// Initialise all the internal class variables, at least to NULL pointer
 	world = NULL;
-	debug = true;
 }
 
 // Destructor
@@ -36,7 +35,7 @@ bool Physics::Start()
 	LOG("Creating Physics 2D environment");
 
 	// Create a new World
-	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+	world = new b2World(b2Vec2(GRAVITY_X, 0));
 
 	// Set this module as a listener for contacts
 	world->SetContactListener(this);
@@ -224,11 +223,16 @@ bool Physics::PostUpdate()
 	bool ret = true;
 
 	// Activate or deactivate debug mode
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+		if (debug == false) {
+			debug = true;
+		}
+		else if (debug == true) {
+			debug = false;
+		}
 	
 	//  Iterate all objects in the world and draw the bodies
-	if (debug)
+	if (debug == true)
 	{
 		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 		{

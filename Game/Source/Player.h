@@ -31,6 +31,9 @@ public:
 	SDL_Texture* texture = NULL;
 	PhysBody* pbody;
 	int pickCoinFxId;
+
+	float jumpForce = 20.0f;
+	bool isGodmode = false;
 };
 
 #endif // __PLAYER_H__
