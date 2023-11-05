@@ -23,7 +23,7 @@
 
   <scene>
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
-    <player x="400" y="352" texturepath="Assets/Textures/player1.png"/>
+    <player x="400" y="352" texturepath="Assets/Player/PlayerSpriteSheet.png"/>
   </scene>
   
 </config>
