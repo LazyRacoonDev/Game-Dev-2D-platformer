@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 #include "Player.h"
+#include "Item.h"
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
@@ -17,7 +18,7 @@ EntityManager::~EntityManager()
 {}
 
 // Called before render is available
-bool EntityManager::Awake(pugi::xml_node& config)
+bool EntityManager::Awake(pugi::xml_node config)
 {
 	LOG("Loading Entity Manager");
 	bool ret = true;
@@ -79,6 +80,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 {
 	Entity* entity = nullptr; 
 
+	//L03: DONE 3a: Instantiate entity according to the type and add the new entity to the list of Entities
 	switch (type)
 	{
 	case EntityType::PLAYER:

@@ -9,6 +9,8 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
+// L03: DONE 1: Add the EntityManager Module to App
+
 // Modules
 class Window;
 class Input;
@@ -18,6 +20,7 @@ class Audio;
 class Scene;
 class EntityManager;
 class Map;
+//L07 DONE 2: Add Physics module
 class Physics;
 
 class App
@@ -73,6 +76,8 @@ private:
 
 public:
 
+	// L03: DONE 1: Add the EntityManager Module to App
+
 	// Modules
 	Window* win;
 	Input* input;
@@ -82,6 +87,7 @@ public:
 	Scene* scene;
 	EntityManager* entityManager;
 	Map* map;
+	//L07 DONE 2: Add Physics module
 	Physics* physics;
 
 private:
@@ -93,14 +99,14 @@ private:
 
 	List<Module *> modules;
 
-	// xml_document to store the config file and
-	// xml_node(s) to read specific branches of the xml
+	// L04: DONE 2 - Create a variable to load and store the XML file in memory
+	// xml_document to store the config file
 	pugi::xml_document configFile;
-	pugi::xml_node configNode;
-
+	
 	uint frames;
 	float dt;
 
+	// L1: DONE 4: Calculate some timing measures
     // required variables are provided:
 	Timer startupTime;
 	PerfTimer frameTime;
@@ -113,6 +119,7 @@ private:
 	float averageFps = 0.0f;
 	uint32 secondsSinceStartup = 0;
 
+	//L02 DONE 1: Set the maximun frame duration in miliseconds.
 	uint32 maxFrameDuration = 16;
 
 };

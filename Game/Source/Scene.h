@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "Player.h"
-#include "Item.h"
 
 struct SDL_Texture;
 
@@ -17,7 +16,7 @@ public:
 	virtual ~Scene();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node& conf);
+	bool Awake(pugi::xml_node config);
 
 	// Called before the first frame
 	bool Start();
@@ -39,6 +38,8 @@ private:
 	float textPosX, textPosY = 0;
 	uint texW, texH;
 	uint windowW, windowH;
+
+	//L03: DONE 3b: Declare a Player attribute
 	Player* player;
 
 };
