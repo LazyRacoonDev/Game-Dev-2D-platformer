@@ -23,28 +23,16 @@ public:
 
 	bool CleanUp();
 
-	// L07 DONE 6: Define OnCollision function for the player. 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 public:
-
-	//L02: DONE 2: Declare player parameters
+	float speed = 0.2f;
+	const char* texturePath;
 	SDL_Texture* texture = NULL;
-	pugi::xml_node config;
-	uint texW, texH;
-
-	//Audio fx
+	PhysBody* pbody;
 	int pickCoinFxId;
 
-	// L07 DONE 5: Add physics to the player - declare a Physics body
-	PhysBody* pbody;
-	int hp = 100;
-	float speed = 2.0f;
-	float godModeSpeed = 7.5f;
-	float jumpForce = 5.0f;
-	float maxJumpForce = 200.0f;
-	bool canJump = false;
-	bool jumping = false;
+	float jumpForce = 20.0f;
 	bool isGodmode = false;
 };
 

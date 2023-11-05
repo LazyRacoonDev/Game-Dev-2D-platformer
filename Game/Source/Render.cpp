@@ -21,25 +21,22 @@ Render::~Render()
 {}
 
 // Called before render is available
-bool Render::Awake(pugi::xml_node config)
+bool Render::Awake(pugi::xml_node& config)
 {
 	LOG("Create SDL rendering context");
 	bool ret = true;
 
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	// L04: DONE 6: Load the VSYNC status from config.xml and adapt the code to set it on / off
-	if (config.child("vsync").attribute("value").as_bool()) {
+	if (config.child("vsync").attribute("value").as_bool(true) == true)
+	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
 	}
-	else {
-		LOG("vsync OFF");
-	}
-	 
+
 	renderer = SDL_CreateRenderer(app->win->window, -1, flags);
 
-	if(renderer == NULL)
+	if (renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
 		ret = false;

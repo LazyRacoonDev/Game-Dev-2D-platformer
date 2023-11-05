@@ -6,14 +6,14 @@
 #include "Input.h"
 #include "Render.h"
 
+class PhysBody;
+
 enum class EntityType
 {
 	PLAYER,
 	ITEM,
 	UNKNOWN
 };
-
-class PhysBody;
 
 class Entity
 {
@@ -73,19 +73,16 @@ public:
 
 	};
 
-
-
 public:
 
 	SString name;
 	EntityType type;
 	bool active = true;
-	pugi::xml_node parameters;
+	pugi::xml_node parameters; 
 
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...
 	iPoint position;       
-	iPoint initialPosition;
 	bool renderable = true;
 };
 
