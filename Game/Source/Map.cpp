@@ -102,7 +102,7 @@ SDL_Rect TileSet::GetTileRect(int gid) const
 
     rect.w = tileWidth;
     rect.h = tileHeight;
-    if (columns || 0) {
+    if (columns || 0) {                 //Esto da error de division entre 0, si no pongo esto peta xd
         rect.x = margin + (tileWidth + spacing) * (relativeIndex % columns);
         rect.y = margin + (tileWidth + spacing) * (relativeIndex / columns);
     }
