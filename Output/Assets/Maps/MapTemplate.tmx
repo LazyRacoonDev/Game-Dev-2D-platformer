@@ -62,7 +62,9 @@
  <tileset firstgid="1071" name="Cueva-1" tilewidth="16" tileheight="16" tilecount="4096" columns="64">
   <image source="Cueva-1.png" width="1024" height="1024"/>
  </tileset>
- <tileset firstgid="5167" source="Colliders.tsx"/>
+ <tileset firstgid="5167" name="Untitled" tilewidth="16" tileheight="16" tilecount="4" columns="2">
+  <image source="../../../../../../../Downloads/Untitled.png" width="32" height="32"/>
+ </tileset>
  <layer id="1" name="Map" width="300" height="125">
   <properties>
    <property name="Draw" type="bool" value="true"/>
